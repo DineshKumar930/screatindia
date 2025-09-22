@@ -1,0 +1,31 @@
+.article-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.no-articles {
+  text-align: center;
+  padding: 3rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.no-articles h3 {
+  color: #1d3557;
+  margin-bottom: 1rem;
+}
+
+.no-articles p {
+  color: #6c757d;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .article-list {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
