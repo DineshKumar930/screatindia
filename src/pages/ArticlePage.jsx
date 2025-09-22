@@ -4,21 +4,30 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 const ArticlePage = () => {
+
+  
   const { id } = useParams();
   const [article, setArticle] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [readMore, setReadMore] = useState(false); // Added for mobile read more
 
+
+
+  
   useEffect(() => {
     const foundArticle = articlesData.find(art => String(art.id) === id);
     setArticle(foundArticle);
   }, [id]);
+
+
+
+
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  // Social sharing functions
   const shareOnFacebook = () => {
     const url = encodeURIComponent(window.location.href);
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
@@ -46,9 +55,7 @@ const ArticlePage = () => {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       })
-      .catch(err => {
-        console.error('Failed to copy: ', err);
-      });
+      .catch(err => console.error('Failed to copy: ', err));
   };
 
   if (!article) {
@@ -62,6 +69,10 @@ const ArticlePage = () => {
       </div>
     );
   }
+
+  // Mobile content handling
+  const mobileContent = article.content.split("\n");
+  const displayedContent = readMore ? mobileContent : mobileContent.slice(0, 3);
 
   return (
     <div className="article-page">
@@ -78,7 +89,7 @@ const ArticlePage = () => {
             </p>
             
             <div className="author-info">
-              <img src={article.authorImage || "https://github.com/DineshKumar930/portfolio/blob/main/images/proo.png"} alt={article.author || "Author"} className="author-image" />
+              <img src={article.authorImage || `https://github.com/dineshkumar930}.png`} alt={article.author || "Author"} className="author-image" />
               <div className="author-details">
                 <span className="author-name">{article.author || "Dinesh Roy"}</span>
                 <span className="author-title">{article.authorTitle || "Chief Executive"}</span>
@@ -95,9 +106,17 @@ const ArticlePage = () => {
             <p className="article-description-full">{article.description}</p>
             
             <div className="article-body">
-              {article.content.split("\n").map((paragraph, index) => (
+              {displayedContent.map((paragraph, index) => (
                 <p key={index}>{paragraph}</p>
               ))}
+              {mobileContent.length > 3 && (
+                <button 
+                  className="read-more-btn"
+                  onClick={() => setReadMore(!readMore)}
+                >
+                  {readMore ? "Read Less" : "Read More"}
+                </button>
+              )}
             </div>
             
             <div className="article-tags">
@@ -121,10 +140,7 @@ const ArticlePage = () => {
                 <button onClick={shareOnLinkedIn} className="share-btn linkedin" aria-label="Share on LinkedIn">
                   <i className="fab fa-linkedin-in"></i>
                 </button>
-                <button onClick={copyToClipboard} className="share-btn link" aria-label="Copy link">
-                  <i className="fas fa-link"></i>
-                  {copied && <span className="copied-tooltip">Copied!</span>}
-                </button>
+               
               </div>
             </div>
           </div>

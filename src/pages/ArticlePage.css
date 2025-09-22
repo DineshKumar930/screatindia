@@ -445,3 +445,26 @@
 html, body {
   overflow-x: hidden;
 }
+/* Read More / Read Less button */
+.read-more-btn {
+  background: #457b9d;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.read-more-btn:hover {
+  background: #1d3557;
+}
+
+/* Mobile: only show read more for small screens */
+@media (min-width: 768px) {
+  .read-more-btn {
+    display: none;
+  }
+}

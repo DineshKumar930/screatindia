@@ -3,23 +3,36 @@ import { Link } from "react-router-dom";
 
 const ArticleCard = ({ article }) => {
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' }
-    return new Date(dateString).toLocaleDateString(undefined, options)
-  }
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
 
   return (
-    <div className="article-card">
-      <div className="article-image">
-        <img src={article.image} alt={article.title} />
+    <Link to={`/article/${article.id}`} className="article-card-link">
+      <div className="article-card">
+        <div className="article-image" style={{ backgroundImage: `url(${article.image})` }}>
+          <div className="article-badge">{article.category || 'Story'}</div>
+          <div className="article-title-overlay">
+            <h3>{article.title}</h3>
+          </div>
+        </div>
+        
+        <div className="article-content">
+          <div className="article-meta">
+            <span className="article-date">{formatDate(article.date)}</span>
+            <span className="article-read-time">• {article.readTime || '5 min read'}</span>
+          </div>
+          
+          <p className="article-description">{article.description}</p>
+          
+          <div className="article-footer">
+            
+            <div className="read-more">Read More →</div>
+          </div>
+        </div>
       </div>
-      <div className="article-content">
-        <h3 className="article-title">{article.title}</h3>
-        <p className="article-date">{formatDate(article.date)}</p>
-        <p className="article-description">{article.description}</p>
-        <Link to={`/article/${article.id}`} className="read-more">Read More</Link>
-      </div>
-    </div>
-  )
-}
+    </Link>
+  );
+};
 
-export default ArticleCard
+export default ArticleCard;
